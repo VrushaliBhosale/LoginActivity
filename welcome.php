@@ -20,8 +20,7 @@ include 'User.php';
 session_start();
 if(isset($_SESSION['name']))
 {
-    echo "session is there";
-    echo $_SESSION['name'];
+   
 }
 if($_SERVER["REQUEST_METHOD"] == "POST")  
 {

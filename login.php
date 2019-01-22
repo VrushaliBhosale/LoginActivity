@@ -5,7 +5,6 @@ if(isset($_SESSION['name']))
         echo "You are already logged in <a href='welcome.php'>Go to Home</a>";
     }
 else{
-    echo "hello";
 ?>
 
 <!DOCTYPE html>
@@ -33,8 +32,6 @@ else{
 
 include "db_config.php";
 include "User.php";
-
-session_start();
 
 $db=new Connection();
 $conn=$db->connect();

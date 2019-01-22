@@ -1,3 +1,12 @@
+<?php
+session_start();
+if(isset($_SESSION['name']))
+    {
+        echo "You are already logged in <a href='welcome.php'>Go to Home</a>";
+    }
+else{
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,5 +57,6 @@ function test_input($data) {
           header("location: welcome.php");
       }
 
-  }
+   }
+}
 ?>

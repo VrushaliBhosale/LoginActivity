@@ -1,3 +1,12 @@
+<?php
+session_start();
+if(isset($_SESSION['name']))
+    {
+        echo "You are already logged in <a href='welcome.php'>Go to Home</a>";
+    }
+else{
+    echo "hello";
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -46,7 +55,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     $pass=test_input($_POST['password']);
 
 
-   
     $client = new User($name,$email,$pass);
     //echo "values:".$client->getuser_name()."<br>".$client->getemail()."<br>".$client->getpass();
     
@@ -70,12 +78,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
            $obj=new Unsigned_User();
            $obj->call_welcome();
         }
+    
     /*$client=new User($name,$email,$pass);
     echo "values:".$client->getuser_name()."<br>".$client->getemail()."<br>".$client->getpass();*/
     //$db->insert($client,$conn);
 
-} 
-
+    } 
+}
 ?>
 
 

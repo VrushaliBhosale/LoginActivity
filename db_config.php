@@ -4,19 +4,19 @@ include "config.php";
 class Connection
 {
     public $sql;
-    public function connect()
+    public $conn;
+    function __construct()
     {
       
-        $conn=new mysqli(DB_SERVER,DB_USERNAME,DB_PASSWORD,DB_DATABASE);
+        $this->conn=new mysqli(DB_SERVER,DB_USERNAME,DB_PASSWORD,DB_DATABASE);
         //echo "connect.."."<br>";
-        if($conn->connect_error)
+        if(($this->conn)->connect_error)
         {
-            echo "connection failed".$conn->connect_error;
+            echo "connection failed".$this->conn->connect_error;
         }
-        return $conn;
-       
-    }
-     public function check_user($conn, $data)
+    
+    }   
+     public function check_user($conn, $data)//make it just select query
      {
          $email=$data->getemail();
          $pass=$data->getpass();
@@ -38,11 +38,11 @@ class Connection
        $email=$data->getemail();
        $pass=$data->getpass(); 
 
-       $sql="INSERT INTO signed_users (fname,email,pass) VALUES('$name', ':$email', ':$pass')";
+       $sql="INSERT INTO signed_users (fname,email,pass) VALUES('$name', '$email', '$pass')";
        
-       if($conn->query($sql)==TRUE)
+       if($conn->query($sql))
        {
-           echo "New Record inserted successfully.";
+            echo "New Record inserted successfully.";
            return true;
        }
        else

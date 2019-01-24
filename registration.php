@@ -1,10 +1,7 @@
 <?php
 session_start();
-if(isset($_SESSION['name']))
-    {
-        echo "You are already logged in <a href='welcome.php'>Go to Home</a>";
-    }
-else{
+if(!isSet($_SESSION['name']))
+{
 ?>
 
 <!DOCTYPE html>
@@ -18,45 +15,31 @@ else{
 <body>
 <h1>Registration Page</h1>
 <form action="<?php echo $_SERVER['PHP_SELF'];?>" method="POST">
-    Name:  <input name="name" type="text"><br><br>
-    Email: <input name="email" type="email"><br><br>
-    Password:<input name="password" type="password"><br><br>
+    Name:  <input name="name" type="text" required><br><br>
+    Email: <input name="email" type="email" required><br><br>
+    Password:<input name="password" type="password" required><br><br>
     <input type="submit" value="Register">
     <a href="login.php">Login</a>
 </body>
 </html>
 
 <?php
-include "db_config.php";
-include "User.php";
-
-$db=new Connection();
-$conn=$db->connect();
-
-$name=$email=$pass="";
-
-function test_input($data) {
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
-  }
+include "Register_class.php";
 
   if($_SERVER["REQUEST_METHOD"] == "POST")  
   {
-      $name=test_input($_POST['name']);
-      $email=test_input($_POST['email']);
-      $pass=test_input($_POST['password']);
-     
-      $client = new User($name,$email,$pass);
-      $isInseretd=$db->insert($client,$conn);
-      echo "Inside registration";
- 
-      if($isInserted)
-      {
-          header("location: welcome.php");
-      }
-
+    $obj=new Register_class();
+    if($obj->register())
+    {
+        echo $_POST['name']." you are Registered succesfully.";
+    }
+    else{
+        echo $_POST['name']." you are already registered.";
+    
    }
+  }
+}
+else{
+    echo "You are already Logged in <a href='welcome.php'>Go to HOme</a>";
 }
 ?>

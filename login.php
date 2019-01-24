@@ -1,10 +1,7 @@
 <?php
 session_start();
-if(isset($_SESSION['name']))
-    {
-        echo "You are already logged in <a href='welcome.php'>Go to Home</a>";
-    }
-else{
+if(!isset($_SESSION['name']))
+{
 ?>
 
 <!DOCTYPE html>
@@ -18,9 +15,9 @@ else{
 <body>
 <h1>LOGIN Page</h1>
     <form action="<?php echo $_SERVER['PHP_SELF'];?>" method="POST">
-    Name:  <input name="name" type="text"><br><br>
-    Email: <input name="email" type="email"><br><br>
-    Password:<input name="password" type="password"><br><br>
+    Name:  <input name="name" type="text" required><br><br>
+    Email: <input name="email" type="email" required><br><br>
+    Password:<input name="password" type="password" required><br><br>
 
     <input type="submit" value="Login">
     <a href="registration.php?">Register</a>
@@ -30,57 +27,20 @@ else{
 
 <?php
 
-include "db_config.php";
-include "User.php";
-
-$db=new Connection();
-$conn=$db->connect();
-
-$name=$email=$pass="";
-
-function test_input($data) {
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
-  }
+include "Login_class.php";
 
 if($_SERVER["REQUEST_METHOD"] == "POST")  
-{
-    $name=test_input($_POST['name']);
-    $email=test_input($_POST['email']);
-    $pass=test_input($_POST['password']);
-
-
-    $client = new User($name,$email,$pass);
-    //echo "values:".$client->getuser_name()."<br>".$client->getemail()."<br>".$client->getpass();
-    
-    $check=$db->check_user($conn,$client);
-    if($check)
-        {
-            //echo "Session:".$_SESSION["name"];
-           
-            $_SESSION['name'] = $client->getuser_name();
-            if(isset($_SESSION['name']))
-            {
-                $client->call_welcome();
-            }
-            else{
-                echo "Login again";
-            }
-            
-        }
-        else
-        {
-           $obj=new Unsigned_User();
-           $obj->call_welcome();
-        }
-    
-    /*$client=new User($name,$email,$pass);
-    echo "values:".$client->getuser_name()."<br>".$client->getemail()."<br>".$client->getpass();*/
-    //$db->insert($client,$conn);
-
-    } 
+ {
+    $obj=new Login_class();
+    if(!$obj->login())
+    {
+        echo "Register FIrst";
+    }
+  
+ }
+}
+else{
+    echo "You are already logged in <a href='welcome.php'>Go to HOme</a>";
 }
 ?>
 

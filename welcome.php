@@ -1,3 +1,8 @@
+<?php
+session_start();
+if(isset($_SESSION['name']))
+{
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,24 +13,22 @@
 </head>
 <body>
 <form action="<?php echo $_SERVER['PHP_SELF'];?>" method="POST">
-    <h2>welcome !!!!!</h2><br><br>
+    <h2>welcome!!</h2><br><br>
     <input type="submit" value="Logout">
 </form>
 </body>
 </html>
 <?php
+include "Logout_class.php";
 
-include 'User.php';
-
-session_start();
-if(isset($_SESSION['name']))
-{
-   
-}
 if($_SERVER["REQUEST_METHOD"] == "POST")  
-{
-    session_destroy();
-    header("location: login.php");
+    {   
+        $obj=new Logout_class();
+        $obj->logout();
+    }
+}
+else{
+    echo "login first <a href='login.php'>Login</a>";
 }
 
 ?>
